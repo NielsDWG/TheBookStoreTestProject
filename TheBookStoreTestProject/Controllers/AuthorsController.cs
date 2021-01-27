@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Linq;
 using TheBookStoreTestProject.Data;
 using TheBookStoreTestProject.Data.Models;
@@ -9,7 +10,7 @@ using TheBookStoreTestProject.Logic.Helper;
 
 namespace TheBookStoreTestProject.Controllers
 {
-    public class AuthorsController : Controller
+    public class AuthorsController : ODataController
     {
         private readonly TestDbContext dbContext;
 
@@ -27,8 +28,12 @@ namespace TheBookStoreTestProject.Controllers
             // Convert to DTO
             IQueryable<AuthorDTO> result = CustomMapper.ProjectTo(authors);
 
-            // Return result
+            // This produces the desired result, but does not apply
+            // the odata filter to the query as it is not an IQuerable anymore
+            //
+            //return Ok(result.ToList());
+
             return Ok(result);
-        }       
+        }
     }
 }
