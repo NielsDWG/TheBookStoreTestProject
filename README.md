@@ -12,4 +12,6 @@ Project to reproduce OData problem when expanding a list property on a list. For
 ## Software versions
 - .NET 5
 - Microsoft.AspNetCore.OData 8.0.0-preview3
-- EF Core 5.0.2
+- Microsoft.EntityFrameworkCore 5.0.2
+- Microsoft.EntityFrameworkCore.SqlServer 5.0.2
+- Microsoft.EntityFrameworkCore.Tools 5.0.2
