@@ -7,7 +7,7 @@ Project to reproduce OData problem when expanding a list property on a list. For
 1. Change the connectionstring in appsettings.json
 1. Run 'Update-Database' in the Package Manager Console
 1. Start the application
-1. Call the endpoint: https://{your_ip}:{your_port}/odata/authors?$expand=Books
+1. Call the endpoint: https://{your_ip}:{your_port}/odata/authors?$expand=Books($filter=Id eq 1)
 
 ## Software versions
 - .NET 5
