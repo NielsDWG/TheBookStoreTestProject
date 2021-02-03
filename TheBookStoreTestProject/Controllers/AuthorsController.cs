@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using TheBookStoreTestProject.Data;
 using TheBookStoreTestProject.Data.Models;
@@ -22,16 +23,15 @@ namespace TheBookStoreTestProject.Controllers
         [EnableQuery]
         public ActionResult Get()
         {
+            // This works correctly
+            //AuthorDTO author = dbContext.Set<Author>().Include(a => a.Books).ThenInclude(b => b.Author).FirstOrDefault(a => a.Id == 1).ToDto();
+            //BookDTO book = dbContext.Set<Book>().Include(b => b.Author).FirstOrDefault(b => b.Id == 1).ToDto();
+
             // Get data
-            IQueryable<Author> authors = dbContext.Set<Author>();
+            IQueryable<Author> authors = dbContext.Set<Author>().Include(a => a.Books).ThenInclude(b => b.Author);
 
             // Convert to DTO
             IQueryable<AuthorDTO> result = CustomMapper.ProjectTo(authors);
-
-            // This produces the desired result, but does not apply
-            // the odata filter to the query as it is not an IQuerable anymore
-            //
-            //return Ok(result.ToList());
 
             return Ok(result);
         }

@@ -7,25 +7,16 @@ using TheBookStoreTestProject.DTO;
 
 namespace TheBookStoreTestProject.Logic.Helper
 {
-    public class CustomMapper
+    public static class CustomMapper
     {
         public static IQueryable<AuthorDTO> ProjectTo(IQueryable<Author> source)
         {
             return source?.Select(ProjectToAuthorDto());
-        }        
-
-        public static AuthorDTO Map(Author author)
-        {
-            return author == null ? null : ProjectToAuthorDto().Compile()(author);
         }
-        public static BookDTO Map(Book book)
+       
+        public static AuthorDTO ToDto(this Author author)
         {
-            return book == null ? null : ProjectToBookDto().Compile()(book);
-        }
-
-        private static List<BookDTO> ProjectTo(IEnumerable<Book> source)
-        {
-            return source?.Select(item => Map(item)).ToList();
+            return ProjectToAuthorDto().Compile().Invoke(author);
         }
 
         private static Expression<Func<Author, AuthorDTO>> ProjectToAuthorDto()
@@ -35,8 +26,22 @@ namespace TheBookStoreTestProject.Logic.Helper
                 Firstname = author.Firstname,
                 Lastname = author.Lastname,
                 Id = author.Id,
-                Books = ProjectTo(author.Books)
+                Books = author.Books.Select(book => book.ToDto())
             };
+        }
+
+
+
+
+
+        public static IQueryable<BookDTO> ProjectTo(IQueryable<Book> source)
+        {
+            return source?.Select(ProjectToBookDto());
+        }
+
+        public static BookDTO ToDto(this Book book)
+        {
+            return ProjectToBookDto().Compile().Invoke(book);
         }
 
         private static Expression<Func<Book, BookDTO>> ProjectToBookDto()
@@ -44,7 +49,7 @@ namespace TheBookStoreTestProject.Logic.Helper
             return book => new BookDTO
             {
                 AuthorId = book.AuthorId,
-                Author = Map(book.Author),
+                Author = book.Author.ToDto(),
                 Id = book.Id,
                 ISBN = book.ISBN,
                 Title = book.Title

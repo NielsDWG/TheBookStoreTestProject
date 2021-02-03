@@ -8,6 +8,6 @@ namespace TheBookStoreTestProject.DTO
         public string Firstname { get; set; }
         public string Lastname { get; set; }
 
-        public List<BookDTO> Books { get; set; }
+        public IEnumerable<BookDTO> Books { get; set; }
     }
 }
