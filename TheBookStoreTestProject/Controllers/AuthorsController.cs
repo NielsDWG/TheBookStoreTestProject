@@ -23,10 +23,6 @@ namespace TheBookStoreTestProject.Controllers
         [EnableQuery]
         public ActionResult Get()
         {
-            // This works correctly
-            //AuthorDTO author = dbContext.Set<Author>().Include(a => a.Books).ThenInclude(b => b.Author).FirstOrDefault(a => a.Id == 1).ToDto();
-            //BookDTO book = dbContext.Set<Book>().Include(b => b.Author).FirstOrDefault(b => b.Id == 1).ToDto();
-
             // Get data
             IQueryable<Author> authors = dbContext.Set<Author>().Include(a => a.Books);
 
