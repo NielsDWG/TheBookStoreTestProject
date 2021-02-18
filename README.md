@@ -1,5 +1,5 @@
 # TheBookStoreTestProject
-Project to reproduce OData problem when expanding a list property on a list. For example: expand books for each author.
+Project to reproduce OData problem when filtering on an expanded property on a list. For example: filter expanded books for each author.
 
 ## How to run the application en reproduce the error
 
