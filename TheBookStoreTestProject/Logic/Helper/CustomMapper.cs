@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DelegateDecompiler;
 using System.Linq;
-using System.Linq.Expressions;
 using TheBookStoreTestProject.Data.Models;
 using TheBookStoreTestProject.DTO;
 
@@ -11,14 +9,22 @@ namespace TheBookStoreTestProject.Logic.Helper
     {
         public static IQueryable<AuthorDTO> ProjectTo(IQueryable<Author> source)
         {
-            return source?.Select(ProjectToAuthorDto());
-        }
-       
-        public static AuthorDTO ToDto(this Author author)
-        {
-            return ProjectToAuthorDto().Compile().Invoke(author);
+            return source?.Select(item => item.ToDto());
         }
 
+        [Computed]
+        public static AuthorDTO ToDto(this Author author)
+        {
+            return new AuthorDTO
+            {
+                Firstname = author.Firstname,
+                Lastname = author.Lastname,
+                Id = author.Id,
+                Books = author.Books.Select(book => book.ToDto())
+            };
+        }
+
+        /*
         private static Expression<Func<Author, AuthorDTO>> ProjectToAuthorDto()
         {
             return author => new AuthorDTO
@@ -29,21 +35,27 @@ namespace TheBookStoreTestProject.Logic.Helper
                 Books = author.Books.Select(book => book.ToDto())
             };
         }
-
-
-
-
+        */
 
         public static IQueryable<BookDTO> ProjectTo(IQueryable<Book> source)
         {
-            return source?.Select(ProjectToBookDto());
+            return source?.Select(item => item.ToDto());
         }
 
+        [Computed]
         public static BookDTO ToDto(this Book book)
         {
-            return ProjectToBookDto().Compile().Invoke(book);
+            return new BookDTO
+            {
+                AuthorId = book.AuthorId,
+                //Author = book.Author.ToDto(),
+                Id = book.Id,
+                ISBN = book.ISBN,
+                Title = book.Title
+            };
         }
 
+        /*
         private static Expression<Func<Book, BookDTO>> ProjectToBookDto()
         {
             return book => new BookDTO
@@ -55,5 +67,6 @@ namespace TheBookStoreTestProject.Logic.Helper
                 Title = book.Title
             };
         }
+        */
     }
 }

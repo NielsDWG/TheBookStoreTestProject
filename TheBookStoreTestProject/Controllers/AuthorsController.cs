@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DelegateDecompiler;
+using DelegateDecompiler.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +8,6 @@ using System.Linq;
 using TheBookStoreTestProject.Data;
 using TheBookStoreTestProject.Data.Models;
 using TheBookStoreTestProject.DTO;
-using TheBookStoreTestProject.Logic;
 using TheBookStoreTestProject.Logic.Helper;
 
 namespace TheBookStoreTestProject.Controllers
@@ -33,7 +34,7 @@ namespace TheBookStoreTestProject.Controllers
             // Convert to DTO
             IQueryable<AuthorDTO> result = CustomMapper.ProjectTo(authors);
 
-            return Ok(result);
+            return Ok(result.Decompile());
         }
     }
 }
