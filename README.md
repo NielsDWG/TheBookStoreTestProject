@@ -12,6 +12,6 @@ Project to reproduce OData problem when filtering on an expanded property on a l
 ## Software versions
 - .NET 5
 - Microsoft.AspNetCore.OData 8.0.0-preview3
-- Microsoft.EntityFrameworkCore 5.0.2
-- Microsoft.EntityFrameworkCore.SqlServer 5.0.2
-- Microsoft.EntityFrameworkCore.Tools 5.0.2
+- Microsoft.EntityFrameworkCore 5.0.3
+- Microsoft.EntityFrameworkCore.SqlServer 5.0.3
+- Microsoft.EntityFrameworkCore.Tools 5.0.3
