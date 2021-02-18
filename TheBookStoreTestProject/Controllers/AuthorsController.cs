@@ -1,4 +1,4 @@
-﻿using LinqToDB.EntityFrameworkCore;
+﻿using DelegateDecompiler.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -20,7 +20,7 @@ namespace TheBookStoreTestProject.Controllers
             this.dbContext = dbContext;
         }
 
-        [EnableQuery]
+        [EnableQuery(HandleNullPropagation = HandleNullPropagationOption.False)]
         public ActionResult Get()
         {
             // Get data
@@ -29,7 +29,7 @@ namespace TheBookStoreTestProject.Controllers
             // Convert to DTO
             IQueryable<AuthorDTO> result = CustomMapper.ProjectTo(authors);
 
-            return Ok(result.ToLinqToDB());
+            return Ok(result.DecompileAsync());
         }
     }
 }
