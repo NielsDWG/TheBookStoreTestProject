@@ -1,5 +1,7 @@
-﻿using DelegateDecompiler;
+﻿using LinqToDB;
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 using TheBookStoreTestProject.Data.Models;
 using TheBookStoreTestProject.DTO;
 
@@ -12,20 +14,16 @@ namespace TheBookStoreTestProject.Logic.Helper
             return source?.Select(item => item.ToDto());
         }
 
-        [Computed]
+        [ExpressionMethod(nameof(ToDtoAuthor))]
         public static AuthorDTO ToDto(this Author author)
         {
-            return new AuthorDTO
-            {
-                Firstname = author.Firstname,
-                Lastname = author.Lastname,
-                Id = author.Id,
-                Books = author.Books.Select(book => book.ToDto())
-            };
+            _toDtoAuthor ??= ToDtoAuthor().Compile();
+            return _toDtoAuthor(author);
         }
 
-        /*
-        private static Expression<Func<Author, AuthorDTO>> ProjectToAuthorDto()
+        private static Func<Author, AuthorDTO> _toDtoAuthor;
+
+        private static Expression<Func<Author, AuthorDTO>> ToDtoAuthor()
         {
             return author => new AuthorDTO
             {
@@ -35,17 +33,19 @@ namespace TheBookStoreTestProject.Logic.Helper
                 Books = author.Books.Select(book => book.ToDto())
             };
         }
-        */
 
-        public static IQueryable<BookDTO> ProjectTo(IQueryable<Book> source)
-        {
-            return source?.Select(item => item.ToDto());
-        }
-
-        [Computed]
+        [ExpressionMethod(nameof(ToDtoBook))]
         public static BookDTO ToDto(this Book book)
         {
-            return new BookDTO
+            _toDtoBook ??= ToDtoBook().Compile();
+            return _toDtoBook(book);
+        }
+
+        private static Func<Book, BookDTO> _toDtoBook;
+
+        private static Expression<Func<Book, BookDTO>> ToDtoBook()
+        {
+            return book => new BookDTO
             {
                 AuthorId = book.AuthorId,
                 //Author = book.Author.ToDto(),
@@ -54,19 +54,5 @@ namespace TheBookStoreTestProject.Logic.Helper
                 Title = book.Title
             };
         }
-
-        /*
-        private static Expression<Func<Book, BookDTO>> ProjectToBookDto()
-        {
-            return book => new BookDTO
-            {
-                AuthorId = book.AuthorId,
-                Author = book.Author.ToDto(),
-                Id = book.Id,
-                ISBN = book.ISBN,
-                Title = book.Title
-            };
-        }
-        */
     }
 }

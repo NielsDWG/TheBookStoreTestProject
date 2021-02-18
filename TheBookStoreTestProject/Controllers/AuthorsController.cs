@@ -1,5 +1,4 @@
-﻿using DelegateDecompiler;
-using DelegateDecompiler.EntityFrameworkCore;
+﻿using LinqToDB.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -29,12 +28,12 @@ namespace TheBookStoreTestProject.Controllers
             //BookDTO book = dbContext.Set<Book>().Include(b => b.Author).FirstOrDefault(b => b.Id == 1).ToDto();
 
             // Get data
-            IQueryable<Author> authors = dbContext.Set<Author>().Include(a => a.Books).ThenInclude(b => b.Author);
+            IQueryable<Author> authors = dbContext.Set<Author>().Include(a => a.Books);
 
             // Convert to DTO
             IQueryable<AuthorDTO> result = CustomMapper.ProjectTo(authors);
 
-            return Ok(result.Decompile());
+            return Ok(result.ToLinqToDB());
         }
     }
 }
