@@ -27,7 +27,7 @@ namespace TheBookStoreTestProject.Controllers
             IQueryable<Author> authors = dbContext.Set<Author>().Include(a => a.Books);
 
             // Convert to DTO
-            IQueryable<AuthorDTO> result = CustomMapper.ProjectTo(authors);
+            IQueryable<AuthorDTO> result = CustomMapper.ProjectTo(authors, 2);
 
             return Ok(result.DecompileAsync());
         }
