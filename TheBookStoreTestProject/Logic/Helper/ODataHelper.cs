@@ -41,7 +41,7 @@ namespace TheBookStoreTestProject.Logic.Helper
         public static IQueryable<T> ApplyODataQueryOptions<T>(IQueryable<T> source, ODataQueryOptions originalOptions, HttpRequest request)
         {
             // Create new ODataqueryOptions with the database model
-            ODataQueryOptions mappedOptions = ODataHelper.RecreateQueryOptions<T>(originalOptions, request);
+            ODataQueryOptions mappedOptions = RecreateQueryOptions<T>(originalOptions, request);
 
             // Apply options to source
             IQueryable odataResult = mappedOptions.ApplyTo(source, new ODataQuerySettings(), AllowedQueryOptions.Select);

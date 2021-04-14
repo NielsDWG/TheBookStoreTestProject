@@ -33,7 +33,7 @@ namespace TheBookStoreTestProject.Controllers
             IQueryable<Author> authors = dbContext.Set<Author>();//.Include(a => a.Books);//.ThenInclude(b => b.Author);
 
             // Apply OData query options
-            var resultList = ODataHelper.ApplyODataQueryOptions(authors, options, Request);
+            IQueryable<Author> resultList = ODataHelper.ApplyODataQueryOptions(authors, options, Request);
 
             // Convert to DTO
             IQueryable<AuthorDTO> result = CustomMapper.ProjectTo(resultList.AsQueryable(), 2);
