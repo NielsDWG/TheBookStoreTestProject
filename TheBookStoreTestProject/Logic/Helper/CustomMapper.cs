@@ -1,15 +1,4 @@
-﻿using DelegateDecompiler;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.OData.Extensions;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
-using Microsoft.OData.Edm;
-using Microsoft.OData.ModelBuilder;
-using Microsoft.OData.UriParser;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using TheBookStoreTestProject.Data.Models;
 using TheBookStoreTestProject.DTO;
 
@@ -17,7 +6,7 @@ namespace TheBookStoreTestProject.Logic.Helper
 {
     public static class CustomMapper
     {
-        public static IEnumerable<AuthorDTO> ProjectTo(IEnumerable<Author> source, int depth)
+        public static IQueryable<AuthorDTO> ProjectTo(IQueryable<Author> source, int depth)
         {
             return source?.Select(item => item.ToDto(depth));
         }
@@ -45,26 +34,6 @@ namespace TheBookStoreTestProject.Logic.Helper
                 ISBN = book.ISBN,
                 Title = book.Title
             };
-        }
-        public static ODataQueryOptions<Author> ToDto(this ODataQueryOptions<AuthorDTO> options)
-        {
-            return new ODataQueryOptions<Author>(options.Context, options.Request)
-            {
-                
-            };
-        }
-    }
-
-    public static class ODataBuilder
-    {
-        public static ODataQueryOptions RecreateQueryOptions<T>(ODataQueryOptions queryOptions, HttpRequest request)
-        {
-            var modelBuilder = new ODataConventionModelBuilder();
-            modelBuilder.AddEntityType(typeof(T));
-
-            ODataQueryContext queryContext = new ODataQueryContext(modelBuilder.GetEdmModel(), typeof(T), queryOptions.Request.ODataFeature().Path);
-            
-            return new ODataQueryOptions(queryContext, request);
-        }
+        }        
     }
 }

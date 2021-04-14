@@ -26,43 +26,20 @@ namespace TheBookStoreTestProject.Controllers
             this.mapper = mapper;
         }
 
-        [EnableQuery(HandleNullPropagation = HandleNullPropagationOption.False)]
+        //[EnableQuery(HandleNullPropagation = HandleNullPropagationOption.False)]
         public ActionResult Get(ODataQueryOptions<AuthorDTO> options)
         {
             // Get data
             IQueryable<Author> authors = dbContext.Set<Author>();//.Include(a => a.Books);//.ThenInclude(b => b.Author);
 
-            ODataQueryOptions mappedOptions = ODataBuilder.RecreateQueryOptions<Author>(options, Request);
-
-            IQueryable odataResult = mappedOptions.ApplyTo(authors);
-
-            ICollection<Author> resultList;
-
-            if (mappedOptions.SelectExpand == null)
-            {
-                resultList = (odataResult as IQueryable<Author>).ToList();
-            }
-            else
-            {
-                resultList = new List<Author>();
-                foreach (var item in odataResult)
-                {                    
-                    if (item.GetType().Name == "SelectAllAndExpand`1")
-                    {
-                        var entityProperty = item.GetType().GetProperty("Instance");
-                        resultList.Add((Author)entityProperty.GetValue(item));
-                    }
-                    else if (item is Author)
-                    {
-                        resultList.Add((Author)item);
-                    }
-                }
-            }
+            // Apply OData query options
+            var resultList = ODataHelper.ApplyODataQueryOptions(authors, options, Request);
 
             // Convert to DTO
-            IEnumerable<AuthorDTO> result = CustomMapper.ProjectTo(resultList, 2);
+            IQueryable<AuthorDTO> result = CustomMapper.ProjectTo(resultList.AsQueryable(), 2);
 
-            return Ok(result);
+            // Apply OData select and expand
+            return Ok(ODataHelper.ApplyODataSelectExpand(result, options));
         }
     }
 }
