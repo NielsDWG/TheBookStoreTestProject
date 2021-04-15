@@ -1,29 +1,21 @@
-﻿using AutoMapper;
-using DelegateDecompiler.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNet.OData.Query;
 using System.Linq;
 using TheBookStoreTestProject.Data;
 using TheBookStoreTestProject.Data.Models;
 using TheBookStoreTestProject.DTO;
 using TheBookStoreTestProject.Logic.Helper;
+using Microsoft.AspNet.OData;
 
 namespace TheBookStoreTestProject.Controllers
 {
     public class AuthorsController : ODataController
     {
         private readonly TestDbContext dbContext;
-        private readonly IMapper mapper;
 
-        public AuthorsController(TestDbContext dbContext, IMapper mapper)
+        public AuthorsController(TestDbContext dbContext)
         {
             this.dbContext = dbContext;
-
-            this.mapper = mapper;
         }
 
         //[EnableQuery(HandleNullPropagation = HandleNullPropagationOption.False)]

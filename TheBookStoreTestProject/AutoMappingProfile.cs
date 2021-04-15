@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using TheBookStoreTestProject.Data.Models;
-using TheBookStoreTestProject.DTO;
-
-public class AutoMappingProfile : Profile
+﻿public class AutoMappingProfile // : Profile
 {
+    /*
     public AutoMappingProfile()
     {
         //AllowNullCollections = true;
@@ -14,5 +11,5 @@ public class AutoMappingProfile : Profile
 
         CreateMap<Book, BookDTO>();//.ForAllMembers(opt => opt.ExplicitExpansion());
         //CreateMap<BookDTO, Book>();
-    }
+    }*/
 }
